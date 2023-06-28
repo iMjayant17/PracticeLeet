@@ -17,17 +17,32 @@ public:
         vector<int> dp(n+5,0);
         dp[1] = 1;
         dp[2] = 2;
-        dp[3] = 3;
-        for(int i = 4;i<=n;i++){
+        for(int i = 3;i<=n;i++){
             dp[i] = dp[i-1]+dp[i-2];
         }
         return dp[n];
     }
 
+    int SO(int n){
+        int a = 1;
+        int b = 2;
+        if(n==1) return a;
+        if(n==2) return b;
+        int c = 0;
+        for(int i = 3;i<=n;i++){
+            c = a+b;
+            a =b;
+            b =c;
+        }
+        return c;
+
+    }
+
     int climbStairs(int n) {
         // vector<int> dp(n+1,-1);
         // return solve(n,dp);
-        return solve2(n);
+        // return solve2(n);
+        return SO(n);
     }
 };
 
