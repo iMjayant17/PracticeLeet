@@ -35,7 +35,7 @@ class Solution
                 }
             }
             cout<<sum1<<" "<<i1<<" "<<sum2<<" "<<i2<<endl;
-            return dp[k] =  max(sum1 + solve(nums,i2,dp) ,  solve(nums,k-1,dp));
+            return dp[k] =  max(sum1 + solve(nums,i2,dp) ,  solve(nums,i1,dp));
 
         }
 
