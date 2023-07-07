@@ -7,12 +7,12 @@ public:
         }
         if(dp[m][n]!=-1) return dp[m][n];
 
-        int right = solve(matrix,m,n+1,maxi,dp);
-        int diagonal = solve(matrix,m+1,n+1,maxi,dp);
-        int down = solve(matrix,m+1,n,maxi,dp);
+        int right = 1+solve(matrix,m,n+1,maxi,dp);
+        int diagonal = 1+solve(matrix,m+1,n+1,maxi,dp);
+        int down = 1+solve(matrix,m+1,n,maxi,dp);
        
         if(matrix[m][n]=='1'){
-            int ans = 1+min(right,min(down,diagonal));
+            int ans = min({right,down,diagonal});
             maxi = max(maxi,ans);
             return dp[m][n] = ans;
         }
