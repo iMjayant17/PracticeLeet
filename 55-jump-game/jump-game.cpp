@@ -5,9 +5,9 @@ public:
             stack<int> s;
             int n = nums.size();
            
-            if(nums[0]==0 && nums.size()>1){
-                return false;
-            }
+            // if(nums[0]==0 && nums.size()>1){
+            //     return false;
+            // }
             
             for(int i = n-2;i>=0;i--){
                 if(nums[i]==0){
