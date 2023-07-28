@@ -4,9 +4,7 @@ public:
 
             stack<int> s;
             int n = nums.size();
-            if(n==1){
-                return true;
-            }
+           
             if(nums[0]==0 && nums.size()>1){
                 return false;
             }
