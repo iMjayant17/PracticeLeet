@@ -37,16 +37,12 @@ public:
                 if(val1>val2 || val2<0){
                     continue;
                 }
-                // cout<<val1<<" "<<val2<<endl;
                 if(  dp[val1]!=dp[val2] || dp[val1]==dp[val2] && dp[val1]==val1){
-                    // cout<<dp[i]<<" "<<i<<" check"<<endl;
                     dp[i] = i;
                 }
             }
         }
-        // for(auto i:dp){
-        //     cout<<i<<" ";
-        // }
+
         if(dp[n-1]==n-1){
             return true;
         }
