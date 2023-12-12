@@ -9,6 +9,7 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
 class Solution {
 public:
     void solve(TreeNode* root ,vector<int> &ans){
@@ -16,17 +17,17 @@ public:
             return;
         }
         
-        if(root->left){
-            solve(root->left,ans);
-            
-        }
+            solve(root->left,ans);  
+        
         ans.push_back(root->val);
-        if(root->right){
             solve(root->right,ans);
             
-        }
+    
         
     }
+
+
+
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int> ans;
         solve(root,ans);
