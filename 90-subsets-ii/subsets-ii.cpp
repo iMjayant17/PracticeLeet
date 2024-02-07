@@ -4,17 +4,19 @@ public:
     vector<int> curr;
     void solve(vector<int> &nums,int idx){
 
-            ans.insert(curr);
-
-
-        for(int i = idx;i<nums.size();i++){
-            if(i!=idx && nums[i]==nums[i-1]){
-                continue;
+        if(idx==nums.size()){
+               sort(curr.begin(),curr.end());
+                ans.insert(curr);
+                return;
             }
-            curr.push_back(nums[i]);
-            solve(nums,i+1);
+
+
+
+            curr.push_back(nums[idx]);
+            solve(nums,idx+1);
             curr.pop_back();
-        }
+            solve(nums,idx+1);
+        
     }
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector<vector<int>> res;
