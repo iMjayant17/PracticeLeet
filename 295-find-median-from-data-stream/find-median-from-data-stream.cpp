@@ -29,7 +29,7 @@ public:
         if((lefty.size()+right.size())&1){
             return (double) lefty.top();
         }
-        double ans = (double)((double)lefty.top() + (double)right.top())/2;
+        double ans = (lefty.top() + right.top())/2.0;
         return ans;
     }
 };
