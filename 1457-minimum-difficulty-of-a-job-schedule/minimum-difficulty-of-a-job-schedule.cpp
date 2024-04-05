@@ -1,21 +1,28 @@
 class Solution {
 public:
-    int minDifficulty(vector<int>& jobDifficulty, int d) {
-        int n = jobDifficulty.size();
-        if(n < d) return -1;
-        
-        vector<vector<int>> dp(d+1, vector<int>(n + 1, INT_MAX));
-        dp[0][n] = 0;
-
-        for(int i = 1; i <= d; i++){
-            for(int j = n-1; j >= 0; j--){
-                int mx = 0;
-                for(int k = j; k <= n-i; k++){
-                    mx = max(mx, jobDifficulty[k]);
-                    dp[i][j] = min(dp[i][j], ((dp[i-1][k+1] == INT_MAX) ? INT_MAX : mx + dp[i-1][k+1]));
-                }
+    int dp[305][12]={-1};
+    int solve(vector<int>& jd, int d,int idx){
+        if(d==1){
+            int maxi = INT_MIN;
+            for(int i = idx;i<jd.size();i++){
+                maxi = max(maxi,jd[i]);
             }
+            return maxi;
         }
-        return dp[d][0];
+        if(dp[idx][d]!= -1) return dp[idx][d];
+        int final = INT_MAX;
+        int ans = jd[idx];
+        for(int i = idx;i<=jd.size()-d;i++){
+            ans = max(ans,jd[i]);
+            int aa = solve(jd,d-1,i+1);
+            final = min(final, ans+aa);
+        }
+        return dp[idx][d] =  final;
+    }
+
+    int minDifficulty(vector<int>& jd, int d) {
+        if(jd.size()<d) return -1;
+        memset(dp,-1,sizeof(dp));
+        return solve(jd,d,0);
     }
 };
