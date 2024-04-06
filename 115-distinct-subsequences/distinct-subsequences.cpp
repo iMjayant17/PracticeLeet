@@ -1,26 +1,32 @@
 class Solution {
 public:
-
-    int solve(string &s,string &t,int i,int j,vector<vector<int>>&dp){
-        if(j==t.length()){
-            return 1;
-        }
-        if(i==s.length()){
-            return 0;
-        }
-        if(dp[i][j] != -1) return dp[i][j];
-        int ans = 0;
-        if(s[i]==t[j]){
-            ans+=solve(s,t,i+1,j+1,dp);
-            ans+= solve(s,t,i+1,j,dp);
-        }
-        else{
-            ans+= solve(s,t,i+1,j,dp);
-        }
-        return dp[i][j] = ans;
-    }
     int numDistinct(string s, string t) {
-        vector<vector<int>> dp(s.length()+1,vector<int>(t.length(),-1));
-        return solve(s,t,0,0,dp);
+        int n = s.length();
+        int m = t.length();
+        vector<vector<long long>> dp(n+1,vector<long long> (m+1,0));
+        for(int i = 0;i<n+1;i++){
+            dp[i][0] = 1;
+        }
+
+
+        for(int i = 1;i<=n;i++){
+            for(int j = 1;j<=m;j++){
+                if(s[i-1] == t[j-1]){
+                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+                    if(dp[i][j]>=INT_MAX) dp[i][j] = 0;
+                }
+                else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        // for(auto i:dp){
+        //     for(auto j:i){
+        //         cout<<j<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        // cout<<dp[n][m]<<endl;
+        return dp[n][m];
     }
 };
