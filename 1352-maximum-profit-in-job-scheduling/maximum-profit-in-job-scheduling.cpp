@@ -1,46 +1,52 @@
 class Solution {
 public:
-    int jobScheduling(vector<int>& startTime, vector<int>& endTime,vector<int>& profit) {
-        int n = startTime.size();
-        vector<vector<int>> arr(n);
-        for(int i = 0; i < n; i++)
-        {
-            int start = startTime[i];
-            int end = endTime[i];
-            int profitt = profit[i];
-            arr[i] = {end, start, profitt};
-        }
-        sort(arr.begin(), arr.end());
-        vector<int> dp(n, 0);
-        dp[0] = arr[0][2];
-        for(int i = 1; i < n; i++)
-        {
-            int include = arr[i][2];
-            int low = 0;
-            int high = n - 1;
-            int last_idx = -1;
-            while(low <= high)
-            {
-                int mid = low + (high - low) / 2;   
-                if(arr[mid][0] <= arr[i][1])
-                {
-                    last_idx = mid;
-                    
-                    low = mid + 1;
-                }
-                else
-                {
-                    high = mid - 1;
-                }
+    int getNext(vector<vector<int>> &arr , int idx){
+        // if(idx>=arr.size()) return arr.size();
+        int val = arr[idx][1];
+        int i = idx;
+        int e = arr.size()-1;
+        int ans = arr.size()+1;
+        while(i<=e){
+            int mid = i+(e-i)/2;
+
+            if(arr[mid][0]<val){
+                i = mid+1;
             }
-            if(last_idx != -1)
-            {
-                include += dp[last_idx];
+            else{
+                ans = mid;
+                e  = mid-1;
             }
-            int exclude = dp[i - 1];            
-            dp[i] = max(include, exclude);
         }
-        
-        return dp[n - 1];
+
+        return ans;
     }
+    int solve(vector<vector<int>> &arr,int idx,vector<int> &dp){
+        if(idx>=arr.size()){
+            return 0;
+        }
+        if(dp[idx]!= -1) return dp[idx];
+        int inc = 0,exc = 0;
+        int next = getNext(arr,idx);
+        inc = arr[idx][2] + solve(arr,next,dp);
+        exc = solve(arr,idx+1,dp);
+
+        return dp[idx] = max(inc,exc);
+    }
+
+    int jobScheduling(vector<int>& s, vector<int>& e,
+                      vector<int>& p) {
+                        vector<int> dp(s.size()+1,-1);
+                        vector<vector<int>> arr;
+                        for(int i = 0;i<s.size();i++){
+                            vector<int> a;
+                            a.push_back(s[i]);
+                            a.push_back(e[i]);
+                            a.push_back(p[i]);
+                            arr.push_back(a);
+                        }
+
+                        sort(arr.begin(),arr.end());
+
+                        return solve(arr,0,dp);
+                      }
 };
