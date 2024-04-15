@@ -1,29 +1,31 @@
 class Solution {
 public:
-
-    bool dfs(vector<int> adj[] , int node,vector<bool> &visited , vector<bool> &inRecur){
-        
-        visited[node] = true;
-        inRecur[node] = true;
-        for(auto child : adj[node]){
-            if(!visited[child] && dfs(adj,child,visited,inRecur)){
-                return true;
-            }
-            else if(inRecur[child]) return true;
-        }
-        inRecur[node] = false;
-        return false;
-    }
-    bool canFinish(int n, vector<vector<int>>& pre) {
+    bool canFinish(int n, vector<vector<int>>& p) {
         vector<int> adj[n];
-        vector<bool > visited(2005,false) , inRecur(2005,false);
-        for(auto i:pre){
-            adj[i[0]].push_back( i[1]);
+        vector<int> indegree(n,0);
+        for(auto i:p){
+            adj[i[0]].push_back(i[1]);
+            indegree[i[1]]++;
         }
-        for(int i = 0;i<n;i++){
-            if(visited[i]==false &&  dfs(adj,i,visited,inRecur)) return false;
+        vector<int> ans;
+        queue<int> q;
+        for(int i = 0;i<n;i++ ){
+            if(indegree[i]==0) q.push(i);
         }
-        return true;
 
+        while(q.size()>0){
+            int child = q.front();
+            q.pop();
+            ans.push_back(child);
+            for(auto x:adj[child]){
+                if(indegree[x]<=0) continue;
+                indegree[x]--;
+                if(indegree[x]==0){
+                    q.push(x);
+                }
+            }
+        }
+
+        return ans.size() == n;
     }
 };
