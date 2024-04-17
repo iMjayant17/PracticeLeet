@@ -1,67 +1,30 @@
 class Solution {
 public:
 
-void check(vector<int> &dp ,pair<int,int> arr){
-
-    int l = 0;
-            int h = dp.size()-1;
-            while(l<h){
-                int m = l +(h-l)/2;
-
-                if(dp[m] < arr.second) l = m + 1;
-                else h = m;
-            }
-
-            dp[l] = arr.second;
+    static bool comp(vector<int>& a ,vector<int> &b){
+        if(a[0]!=b[0]){
+            return a[0]< b[0];
+        }
+        return a[1]>b[1];
     }
-    static bool comp(pair<int,int> &a,pair<int,int>&b){
-        if(a.first==b.first){
-            return a.second>b.second;
-        }
-        else{
-            return a.first<b.first;
-        }
-    }
-    int maxEnvelopes(vector<vector<int>>& env) {
-        vector<pair<int,int>> e;
-        for(auto i:env){
-            e.push_back({i[0],i[1]});
-        }
-        vector<int> arr;
+    int maxEnvelopes(vector<vector<int>>& e) {
+
+        int n = e.size();
+        vector<int> lis;
+
         sort(e.begin(),e.end(),comp);
-        arr.push_back(e[0].second);
-        // for(auto i:e){
-        //     for(auto j:i){
-        //         cout<<j<<" ";
-        //     }
-        //     cout<<endl;
-        // }
 
-        // cout<<endl;
-
-        for(int i = 1;i<e.size();i++){
-            if(e[i].second>arr.back()){
-                arr.push_back(e[i].second);
+        for(int i = 0;i<n;i++){
+            auto point = lower_bound(lis.begin(),lis.end(),e[i][1]);
+            if(point==lis.end()){
+                lis.push_back(e[i][1]);
             }
             else{
-                check(arr,e[i]);
+                *point = e[i][1];
             }
-
-
-        //     for(auto i:arr){
-        //     for(auto j:i){
-        //         cout<<j<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        // cout<<endl;
         }
-        // for(auto i:arr){
-        //     for(auto j:i){
-        //         cout<<j<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        return arr.size();
+
+        return lis.size();
+        
     }
 };
