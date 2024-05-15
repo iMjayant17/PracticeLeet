@@ -1,33 +1,33 @@
 class Solution {
 public:
+    bool finalans;
 
-    void dfs(vector<vector<int>>& adj,int src,vector<int> &value,bool &ans,int cnt = 0){
-        if(value[src]!= -1){
-            if(value[src]!=cnt){
-                ans = false;
+    void dfs(int node,vector<vector<int>>& adj,vector<int> &visited,int st){
+        if(visited[node]!= -1){
+            if(visited[node]!=st){
+                finalans = false;
             }
             return;
         }
-        value[src] = cnt;
-
-        for(auto child:adj[src]){
-            dfs(adj,child,value,ans,1-cnt);
+        visited[node] = st;
+        for(auto child:adj[node]){
+            dfs(child,adj,visited,1 - st);
         }
     }
-
     bool isBipartite(vector<vector<int>>& adj) {
+        finalans = true; 
         int n = adj.size();
-        vector<int> value(n+1,-1);
+        vector<int> visited(n,-1);
+
         for(int i = 0;i<n;i++){
-            if(value[i]== -1){
-                bool ans = true;
-                dfs(adj,i,value,ans);
-                if(ans == false){
-                    return false;
-                }
+            if(visited[i]== -1){
+                dfs(i,adj,visited,0);
             }
         }
 
-        return true;
+        if(finalans){
+            return true;
+        }
+        return false;
     }
 };
