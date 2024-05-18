@@ -45,7 +45,7 @@ TrieNode* getNode(){
             }
             crawler = crawler->child[ch-'a'];
         }
-        if(crawler != NULL && crawler->ended == true ) return true;
+        if(crawler->ended == true ) return true;
         return false;
     }
     
