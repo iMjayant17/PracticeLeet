@@ -1,48 +1,62 @@
-#pragma GCC optimize("O3", "unroll-loops")
 class Solution {
 public:
-    vector<vector<int>> adj;
-    vector<int> sum, cnt;
-    void build_adj(int n, vector<vector<int>>& edges){
-        adj.resize(n);
-        for(auto& e: edges){
-            int v=e[0], w=e[1];
-            adj[v].push_back(w);
-            adj[w].push_back(v);       
+    
+    vector<int> grp;
+    vector<int> parentSum;
+    vector<int> parent;
+    void dfs(vector<vector<int>> &adj,int node,int depth = 0,int par = -1){
+        parent[node] = par;
+        parentSum[0]+=depth;
+        int cnt = 0;
+        for(auto child:adj[node]){
+            if(child==par) continue;
+             dfs(adj,child,depth+1,node);
+            
+        grp[node] += grp[child];
         }
+        grp[node]++;
     }
-    void dfs0(int i, int parent=-1){
-        for(int j: adj[i]){
-            if (j==parent) continue;
-            dfs0(j, i);
-            cnt[i]+=cnt[j];
-            sum[i]+=sum[j]+cnt[j];//subtree for root=i
+
+    void solve(vector<vector<int>> &adj,int node,int par = -1){
+        
+        
+        if(node!=0){
+            parentSum[node] = parentSum[par] - (2*grp[node]) + grp.size(); 
         }
-    }
-    void reroot(int i, int parent, int n){
-        for (int j: adj[i]){
-            if (j==parent) continue;
-            sum[j]=sum[i]+n-2*cnt[j];
-            reroot(j, i, n);
+        cout<<node<<endl;
+        for(auto child:adj[node]){
+            // cout<<child<<" child"<<endl;
+            if(child==par) continue;
+            // cout<<"called"<<endl;
+             solve(adj,child,node);
         }
+        
     }
     vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
-    //    if (n==1) return {0};
-        build_adj(n, edges);
-        sum.assign(n, 0);
-        cnt.assign(n, 1);
-        dfs0(0);
-        reroot(0, -1, n);
-        return sum;
+        grp.resize(n,0);
+        parentSum.resize(n,0);
+        parent.resize(n,0);
+        vector<vector<int>> adj(n);
+        for(auto i:edges){
+            adj[i[0]].push_back(i[1]);
+            adj[i[1]].push_back(i[0]);
+        }
+
+        dfs(adj,0);
+        // for(auto i:grp){cout<<i<<" ";
+        // }
+        // cout<<endl; 
+        // for(auto i:parent){cout<<i<<" ";
+        // }
+        // cout<<endl; 
+        // for(auto i:parentSum){cout<<i<<" ";
+        // }
+        // cout<<endl; 
+        // for(int i = 1;i<n;i++){
+        //     parentSum[i] = parentSum[parent[i]] -(2*grp[i]) + grp.size();
+        // }
+
+        solve(adj,0);
+        return parentSum;
     }
 };
-
-
-
-auto init = []()
-{ 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    return 'c';
-}();
