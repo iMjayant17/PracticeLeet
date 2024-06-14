@@ -4,9 +4,6 @@ public:
         sort(nums.begin(),nums.end());
         int last = nums[0];
         int ans = 0;
-        for(auto i:nums){
-            cout<<i<<" ";
-        }
         for(int i = 1;i<nums.size();i++){
             if(nums[i]<=nums[i-1] ){
                 ans+= (last+1 - nums[i]);
