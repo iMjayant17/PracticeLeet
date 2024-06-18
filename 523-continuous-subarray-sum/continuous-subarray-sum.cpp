@@ -17,7 +17,7 @@ public:
                 m[pre[i]] = i;
             }
             else{
-                if(i-m[pre[i]]+1>2){
+                if(i-m[pre[i]]>1){
                     return true;
                 }
             }
