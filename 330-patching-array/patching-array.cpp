@@ -15,15 +15,12 @@ public:
             }
 
             if(i>=nums.size()){
-                 break;
-            }
-            
-        }
-        if(i>=nums.size() && sum<n){
-            while( sum<n){
+                while( sum<n){
                 sum += (sum+1);
                 cnt++;
             }
+            }
+            
         }
         return cnt;
         
