@@ -20,9 +20,7 @@ public:
 		
         vector<set<int>>ans(n);
         while(!q.empty()){
-            int si = q.size();
-            while(si--)
-            {
+           
                 int top = q.front();
                 for(int i : adj[top])
                 {
@@ -38,7 +36,6 @@ public:
                     
                 }
                 q.pop();
-            }
         }
         vector<vector<int>>res(n);
         for(int i=0; i<n; i++)
