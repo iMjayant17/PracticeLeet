@@ -12,7 +12,7 @@ public:
             for(int j=0 ; j<words[i].size() ; j++){
                 w1+=words[i][j];
                 w2+=words[i][words[i].size()-1-j];
-                if(mp.count(w1)){
+                if(mp.find(w1)!=mp.end()){
                     string r=w2;
                     reverse(r.begin(),r.end());
                     if(r==w1){
