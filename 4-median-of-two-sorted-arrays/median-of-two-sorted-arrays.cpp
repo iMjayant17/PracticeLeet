@@ -12,6 +12,7 @@ public:
         while(s<=e){
            int mid = (s+e)/2;
            int left = target -mid;
+           if(left>m){s = mid+1;continue;}
            int a = (mid<n && mid>=0)?nums1[mid]: INT_MAX;
            int b = (left<m && left>=0)?nums2[left]:INT_MAX;
            int c = (mid-1>=0 && mid-1<n) ?nums1[mid - 1]:INT_MIN;
