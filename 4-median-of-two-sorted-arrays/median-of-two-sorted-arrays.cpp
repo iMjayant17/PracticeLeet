@@ -17,7 +17,7 @@ public:
            int c = (mid-1>=0) ?nums1[mid - 1]:INT_MIN;
            int d = (left-1>=0)?nums2[left - 1]:INT_MIN;
 
-           if(c<=b && d<=a){
+           if(max(c,d)<=min(a,b)){
             if((n+m)&1){
                 return max(c,d);
             }
