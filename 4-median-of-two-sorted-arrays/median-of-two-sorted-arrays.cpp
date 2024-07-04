@@ -12,10 +12,10 @@ public:
         while(s<=e){
            int mid = (s+e)/2;
            int left = target -mid;
-           int a = (mid<n)?nums1[mid]: INT_MAX;
-           int b = (left<m)?nums2[left]:INT_MAX;
-           int c = (mid-1>=0) ?nums1[mid - 1]:INT_MIN;
-           int d = (left-1>=0)?nums2[left - 1]:INT_MIN;
+           int a = (mid<n && mid>=0)?nums1[mid]: INT_MAX;
+           int b = (left<m && left>=0)?nums2[left]:INT_MAX;
+           int c = (mid-1>=0 && mid-1<n) ?nums1[mid - 1]:INT_MIN;
+           int d = (left-1>=0 && left-1<m)?nums2[left - 1]:INT_MIN;
 
            if(max(c,d)<=min(a,b)){
             if((n+m)&1){
