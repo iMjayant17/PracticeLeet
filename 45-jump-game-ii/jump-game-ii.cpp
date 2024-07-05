@@ -2,12 +2,15 @@ class Solution {
 public:
     int jump(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n,INT_MAX);
+        vector<int> dp(n,100000);
         dp[0] = 0;
-        for(int i = 0;i<n;i++){
-            for(int j =i;j<=min(n-1,i+nums[i]);j++ ){
-                dp[j] = min(dp[j],1+dp[i]);
+        for(int i = 1;i<n;i++){
+            int cnt = 100000;
+            for(int j =1;j<=1002;j++ ){
+                if(i-j<0) break;
+                if(nums[i-j]>=j) cnt = min(cnt,dp[i-j]);
             }
+            dp[i] = cnt+1;
         }
         return dp[n-1];
     }
