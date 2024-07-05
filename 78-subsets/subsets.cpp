@@ -11,7 +11,7 @@ public:
         subs(nums,i+1,ans,storing);
         storing.push_back(nums[i]);
         subs(nums,i+1,ans,storing);
-        // storing.pop_back();
+        storing.pop_back();
 
     }
 
