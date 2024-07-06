@@ -1,20 +1,21 @@
 class Solution {
 public:
-void dfs(vector<vector<int>>& matrix,vector<int> &ans,int i,int j){
-    if(i<0 || i>=matrix.size() || j<0||j>=matrix[0].size() || matrix[i][j]==INT_MAX ){
-        return;
+vector<int> ans;
+    void solve(int i, int j, vector<vector<int>>& matrix) {
+        if (i >= matrix.size() || i < 0 || j >= matrix[0].size() || j < 0 ||
+            matrix[i][j] == 1000) {
+            return;
+        }
+        ans.push_back(matrix[i][j]);
+        matrix[i][j]=1000;
+        if(i<=j+1) solve(i,j+1,matrix);
+        solve(i+1,j,matrix);
+        solve(i,j-1,matrix);
+        solve(i-1,j,matrix);
+
     }
-    ans.push_back(matrix[i][j]);
-    matrix[i][j] = INT_MAX;
-    if(i<=j+1)
-        dfs(matrix,ans,i,j+1);
-    dfs(matrix,ans,i+1,j);
-    dfs(matrix,ans,i,j-1);
-    dfs(matrix,ans,i-1,j);
-}
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        vector<int> ans;
-        dfs(matrix,ans,0,0);
+        solve(0,0,matrix);
         return ans;
     }
 };
