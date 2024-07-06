@@ -1,44 +1,16 @@
-class Solution
-{
-    public:
-        bool canJump(vector<int> &nums)
-        {
-
-            vector<int> s;
-            int n = nums.size();
-
-            for (int i = n - 2; i >= 0; i--)
-            {
-                if (nums[i] == 0)
-                {
-                    s.push_back(i);
-                }
-                else
-                {
-                    while (s.size() > 0 && s.back() < i + nums[i])
-                    {
-                        s.pop_back();
-                    }
-                }
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+        vector<bool> dp(n,false);
+        dp[0] = true;
+        for(int i = 0;i<n;i++){
+            if(!dp[i]) return false;
+            for(int j = 1;j<=nums[i];j++){
+                if(i+j>=n) break;
+                dp[i+j] = true;
             }
-
-            if (s.size() == 0) return true;
-            return false;
-
-           	// vector<int> ind;
-           	// int n = nums.size();
-           	// if(nums[0] ==0 && n>1) return false;
-           	// for(int i =n-2;i>=0;i--){
-           	//     if(nums[i]==0){
-           	//         ind.push_back(i+1);
-           	//         continue;
-           	//     }
-           	//     while(ind.size()>0 && ind.back()<= i+ nums[i]){
-           	//         ind.pop_back();
-           	//     }
-           	// }
-
-           	// if(ind.size()==0) return true;
-           	// return false;
         }
+        return true;
+    }
 };
