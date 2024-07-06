@@ -1,21 +1,20 @@
 class Solution {
 public:
     double myPow(double x, int n) {
-        int b = n;
-        n = abs(n);
-        double ans = 1;
-        double k = x;
-        while(n>0){
-            if(n&1){
-                ans*=k;
-            }
-            k = k*k;
-            n = n>>1;
+       int neg = n<0?1:0;
+       n = abs(n);
+       double ans = 1;
+       while(n){
+        if(n&1){
+            ans*=x;
         }
-        if(b<0){
-            return 1.0/ans;
-        }
-        return ans;
+        x = x*x;
+        n=n>>1;
+       }
+
+       if(neg) return (1/ans);
+
+       return ans;
         
     }
 };
