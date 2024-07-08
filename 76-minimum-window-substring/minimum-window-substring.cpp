@@ -1,38 +1,39 @@
 class Solution {
 public:
-bool check(unordered_map<char,int> &s,unordered_map<char,int> &t){
-    for(auto i:t){
-        if(s[i.first]<i.second) return false;
-    }
-    return true;
-}
-    string minWindow(string s, string t) {
-        if(t.length()>s.length()) return "";
-        unordered_map<char,int> mt,ms;
-        for(auto i:t){
-            mt[i]++;
-        }
-        int i = 0,j = 0;
-        int st = 0,e = INT_MAX;
-        while(j<s.length()){
-            ms[s[j]]++;
-            j++;
-            while(check(ms,mt) && i<j){
-                if(e-st > j-i){
-                    e = j;
-                    st = i;
-                }
-                ms[s[i]]--;
-                i++;
+    map<char,int> tt;
+    bool check(map<char,int> &m){
+        for(auto i:tt){
+            if(m.find(i.first)==m.end()) return false;
+            else{
+                if(m[i.first]<i.second) return false;
             }
         }
-        string ans = "";
-        if(e== INT_MAX) return ans;
-        for(int i = st;i<e;i++){
-            ans.push_back(s[i]);
+        return true;
+    }
+    string minWindow(string s, string t) {
+        int i = 0;
+        int e =0;
+        for(auto i:t){
+            tt[i]++;
         }
-        // cout<<st<<" "<<e<<endl;
-        return ans;
+        map<char,int> m;
+        int ans = INT_MAX;
+        int st = 0;
+        while(e<=s.length()){
+            while(i<s.length() && check(m)){
+                if(e-i < ans){
+                    ans = e-i;
+                    st = i;
+                }
+                m[s[i]]--;
+                i++;
+            }
+            m[s[e]]++;
+            e++;
+        }
+
+        if(ans == INT_MAX) return "";
+        return s.substr(st,ans);
 
     }
 };
