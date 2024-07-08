@@ -19,7 +19,11 @@ public:
         map<char,int> m;
         int ans = INT_MAX;
         int st = 0;
-        while(e<=s.length()){
+        while(e<s.length()){
+            
+            m[s[e]]++;
+            e++;
+            
             while(i<s.length() && check(m)){
                 if(e-i < ans){
                     ans = e-i;
@@ -28,8 +32,7 @@ public:
                 m[s[i]]--;
                 i++;
             }
-            m[s[e]]++;
-            e++;
+            
         }
 
         if(ans == INT_MAX) return "";
