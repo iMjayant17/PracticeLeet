@@ -1,64 +1,33 @@
 class Solution {
 public:
-    vector<int> prevSmallerElement(vector<int> arr){
-        int n = arr.size();
-        vector<int> ans;
-        stack<int> s;
-        for(int i = 0;i<n;i++){
-            while(s.size()>0 && arr[s.top()]>=arr[i]){
-                s.pop();
-            }
-            if(s.size()==0){
-                ans.push_back(-1);
-            }
-            else{
-                ans.push_back(s.top());
-            }
-            s.push(i);
-        }
-        return ans;
-    }
-    vector<int> nextSmaller(vector<int> arr){
-        int n = arr.size();
-        vector<int> ans;
-        stack<int> s;
-        for(int i = n-1;i>=0;i--){
-            while(s.size()>0 && arr[s.top()]>=arr[i]){
-                s.pop();
-            }
-            if(s.size()==0){
-                ans.push_back(n);
-            }
-            else{
-                ans.push_back(s.top());
-            }
-            s.push(i);
-        }
-        reverse(ans.begin(),ans.end());
-        return ans;
-    }
     int largestRectangleArea(vector<int>& heights) {
-        vector<int> prev = prevSmallerElement(heights);
-        vector<int> next = nextSmaller(heights);
         int n = heights.size();
-        int ans = INT_MIN;
-        // for(auto i: prev){
-        //     cout<<i<<" ";
-        // }
-        // cout<<endl;
-        // for(auto i: next){
-        //     cout<<i<<" ";
-        // }
-        // cout<<endl;
-
-        for(int i = 0;i<n;i++){
-        //    if(next[i] == -1) next[i] = n; 
-           int val = (next[i] - prev[i] - 1)* heights[i];
-        //    cout<<val<<endl;
-           ans = max(ans,val); 
-
+        vector<int> left(n, 0), right(n, 0);
+        stack<int> s;
+        s.push(-1);
+        for (int i = 0; i < n; i++) {
+            while (s.top() > -1 && heights[s.top()] >= heights[i]) {
+                s.pop();
+            }
+            left[i] = s.top();
+            s.push(i);
         }
-    
+        while (s.size() > 0) {
+            s.pop();
+        }
+        s.push(n);
+        for (int i = n - 1; i >= 0; i--) {
+            while (s.size() > 1 && heights[s.top()] >= heights[i]) {
+                s.pop();
+            }
+            right[i] = s.top();
+            s.push(i);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            int val = (right[i] - left[i] - 1) * heights[i];
+            ans = max(ans, val);
+        }
         return ans;
     }
 };
