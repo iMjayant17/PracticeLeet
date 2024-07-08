@@ -1,29 +1,30 @@
 class Solution {
 public:
+    int dp[1000];
+    int solve(int idx ,string &s){
+        if(idx>=s.length()){
+            return 1;
+        }
+        if(s[idx]=='0') return 0;
+
+        if(dp[idx]!= -1) return dp[idx];
+        int a = 0 ,b = 0;
+        a = solve(idx+1,s);
+        string t = "";
+        t.push_back(s[idx]);
+        if(idx+1<s.length()){
+            t.push_back(s[idx+1]);
+            if(stoi(t)<=26 && stoi(t)>0){
+            b =solve(idx+2,s);
+        }
+        }
+        
+
+        return dp[idx] = a+b;
+
+    }
     int numDecodings(string s) {
-        int n = s.length();
-        if (n == 0 || s[0] == '0') {
-            return 0;
-        }
-
-        vector<int> dp(2, 0);
-        dp[0] = 1;
-        dp[1] = 1;
-
-        for (int i = 1; i < n; ++i) {
-            int ways = 0;
-            if (s[i] != '0') {
-                ways += dp[1];
-            }
-
-            if (s[i - 1] == '1' || (s[i - 1] == '2' && s[i] <= '6')) {
-                ways += dp[0];
-            }
-
-            dp[0] = dp[1];
-            dp[1] = ways;
-        }
-
-        return dp[1];
+        memset(dp,-1,sizeof(dp));
+        return solve(0,s);
     }
 };
