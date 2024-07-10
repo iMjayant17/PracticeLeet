@@ -1,26 +1,32 @@
 class Solution {
 public:
-
-    int solve(vector<int>& nums , int idx,int sum){
-        if(idx>=nums.size()){
-            if(sum==0) return 1;
-            return 0;
-        }
-
-        int i= 0,e = 0;
-        if(sum >= nums[idx]){
-            i = solve(nums,idx+1,sum-nums[idx]);
-        }
-        e = 0 + solve(nums,idx+1,sum);
-        return i+e;
-    }
-
     int findTargetSumWays(vector<int>& nums, int target) {
-        int k = accumulate(nums.begin(),nums.end(),0) + target;
-        if(k&1) return 0;
-        k = k>>1;
-        cout<<k<<endl;
-        return  solve(nums,0,k);
+        
+        // x+y = sum
+        // x-y = target
+        // 2x = sum+target
+        // dp[i][j] = ith coin use krk jth sum bnane k ways
+
+        int sum = accumulate(nums.begin(),nums.end(),0ll);
+        if((sum+target)&1) return 0;
+        int tar = (sum+target)/2;
+        int n = nums.size();
+        vector<map<int,int>> dp(n+1);
+        dp[0][0] = 1;
+        for(int i = 1;i<n+1;i++){
+            for(int j = 0;j<tar+1;j++){
+                dp[i][j] += dp[i-1][j];
+                if(j-nums[i-1]>=0) dp[i][j] += dp[i-1][j-nums[i-1]];
+            }
+        }
+        // for(auto i:dp){
+        //     for(auto j:i){
+        //         cout<<j<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        return dp[n][tar];
+
 
     }
 };
