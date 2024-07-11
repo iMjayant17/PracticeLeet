@@ -1,32 +1,20 @@
 class Solution {
 public:
+    int dp[1005][1005];
+    int solve(int idx , int ind ,string &s,string &t){
+        if(ind>=t.length()) return 1;
+        if(idx>=s.length()) return 0;
+        if(dp[idx][ind] != -1) return dp[idx][ind];
+        int a = 0,b = 0;
+        if(s[idx]==t[ind]){
+            a = solve(idx+1,ind+1,s,t);
+        }
+            b = solve(idx+1,ind,s,t);
+
+        return dp[idx][ind] = a+b;
+    }
     int numDistinct(string s, string t) {
-        int n = s.length();
-        int m = t.length();
-        vector<vector<long long>> dp(n+1,vector<long long> (m+1,0));
-        for(int i = 0;i<n+1;i++){
-            dp[i][0] = 1;
-        }
-
-
-        for(int i = 1;i<=n;i++){
-            for(int j = 1;j<=m;j++){
-                if(s[i-1] == t[j-1]){
-                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
-                    if(dp[i][j]>=INT_MAX) dp[i][j] = 0;
-                }
-                else{
-                    dp[i][j] = dp[i-1][j];
-                }
-            }
-        }
-        // for(auto i:dp){
-        //     for(auto j:i){
-        //         cout<<j<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        // cout<<dp[n][m]<<endl;
-        return dp[n][m];
+        memset(dp,-1,sizeof(dp));
+        return solve(0,0,s,t);
     }
 };
