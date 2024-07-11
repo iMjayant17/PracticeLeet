@@ -1,28 +1,26 @@
 class Solution {
 public:
-    bool check(vector<int>& arr, int h,long long check){
-        long long time = 0;
-        for(long long i = 0;i<arr.size();i++){
-            time += (long long)(1ll*arr[i]+1ll*check-1ll)/(long long)check;
-        }
-        if(time<=h) return true;
-        return false;
 
+    bool check(vector<int>& arr , int h ,int s){
+        int cnt = 0;
+        for(int i = 0;i<arr.size();i++){
+            cnt += (arr[i]+s-1)/s;
+        }
+        return cnt<=h;
     }
-    int minEatingSpeed(vector<int>& arr, int h) {
-        long long s = 1;
-        long long e = *max_element(arr.begin(),arr.end());
-        long long ans = 0;
-        while(s<=e){
-            long long mid = (long long)(1ll*s+1ll*e)/2;
-            if(check(arr,h,mid)){
-                ans = mid; 
-                e = mid-1;
+
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int s = 0;
+        int e = 1e9;
+        while(s+1<e){
+            int mid = e - (e-s)/2;
+            if(check(piles,h,mid)){
+                e = mid;
             }
             else{
-                s = mid+1;
+                s = mid;
             }
         }
-        return ans;
+        return e;
     }
 };
