@@ -1,23 +1,19 @@
 class Solution {
 public:
-    string makeLargestSpecial(string s) {
-
-        vector<string> specials;
-        int cnt = 0;
-        for (char c : s) {
-            if (cnt == 0)
-                specials.push_back("");
-            c == '1' ? ++cnt : --cnt;
-            specials.back() += c;
+   string makeLargestSpecial(string S) {
+        int count=0,i=0;
+        vector<string> res;
+        for(int j=0;j<S.size();j++){
+            if(S[j]=='1') count++;
+            else count--;
+            if(count==0){
+                res.push_back('1'+makeLargestSpecial(S.substr(i+1,j-i-1))+'0');
+                i=j+1;
+            }
         }
-
-        for (auto& special : specials)
-            special ='1' + makeLargestSpecial(special.substr(1, special.size() - 2)) + '0';
-
-        sort(specials.begin(), specials.end(), greater<string>());
-        string res;
-        for (auto& special : specials)
-            res += special;
-        return res;
+        sort(res.begin(),res.end(),greater<string>());
+        string res2="";
+        for(int i=0;i<res.size();i++) res2+=res[i];
+        return res2;
     }
 };
