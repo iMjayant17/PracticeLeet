@@ -8,10 +8,6 @@ public:
         sort(arr.begin(),arr.end());
         stack<int> st;
         for(int i = 0;i<arr.size();i++){
-            if(st.size()==0){
-                st.push(i);
-                continue;
-            }
             while(st.size()>0 && arr[st.top()].second<= arr[i].second){
                 st.pop();
             }
