@@ -24,6 +24,6 @@ public:
                 }
             }
         }
-        return min(nums[s],nums[e]);
+        return nums[e];
     }
 };
