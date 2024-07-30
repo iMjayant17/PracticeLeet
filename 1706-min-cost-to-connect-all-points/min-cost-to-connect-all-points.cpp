@@ -1,47 +1,35 @@
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
-        map<pair<int, int>, vector<tuple<int, int, int>>> adj;
-        for (auto p : points) {
-            int x = p[0];
-            int y = p[1];
-            for (auto q : points) {
-                int xx = q[0];
-                int yy = q[1];
-                int wt = abs(x - xx) + abs(y - yy);
-                adj[{x, y}].push_back({wt, xx, yy});
-                // cout<<x<<" "<<y<<" "<<wt<<" "<<xx<<" "<<yy<<endl;
+        vector<vector<pair<int, int>>> adj_list(points.size());
+        for (int i = 0; i < points.size(); i++) {
+            vector<int> curr = points[i];
+            for (int j = 0; j < points.size(); j++) {
+                if (j == i)
+                    continue;
+                adj_list[i].push_back(
+                    {abs(curr[0] - points[j][0]) + abs(curr[1] - points[j][1]),
+                     j});
             }
         }
-
-        int ans = 0;
-
-        map<pair<int, int>, int> m;
-
-        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>,
-                       greater<tuple<int, int, int>>>
+        priority_queue<pair<int, int>, vector<pair<int, int>>,
+                       greater<pair<int, int>>>
             pq;
-
-        pq.push({0, points[0][0], points[0][1]});
-
+        vector<int> visited(points.size(), 0);
+        pq.push({0, 0});
+        int ans = 0;
         while (!pq.empty()) {
-            auto [wt, x, y] = pq.top();
+            int curr = pq.top().second;
+            int wt = pq.top().first;
             pq.pop();
-
-            // cout<<wt <<" "<< m[{x,y}]<<endl;
-            if (m[{x, y}])
+            if (visited[curr])
                 continue;
-            // cout<<"sdfasdf"<<endl;
-            m[{x, y}]++;
+            visited[curr] = true;
             ans += wt;
-
-            for (auto& ed : adj[{x, y}]) {
-                auto [wtt, xx, yy] = ed;
-                // cout<<"sdafsdsdafdsf"<<" "<<m[{xx,yy}]<<endl;
-                if (m[{xx, yy}])
+            for (pair<int, int> neighb : adj_list[curr]) {
+                if (visited[neighb.second])
                     continue;
-
-                pq.push(ed);
+                pq.push(neighb);
             }
         }
         return ans;
