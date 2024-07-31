@@ -1,46 +1,47 @@
 class Solution {
 public:
-
-    int find(int i,vector<int> &parent){
-        if(parent[i]==i) return i;
-        return parent[i] = find(parent[i],parent);
+    vector<int> rank,parent;
+    
+    int find(int i){
+        if(i==parent[i]) return i;
+        return parent[i] = find(parent[i]);
     }
 
-    void Union(int x,int y,vector<int> &parent,vector<int> &rank){
-        int x_par = find(x,parent);
-        int y_par = find(y,parent);
+    void Union(int a,int b){
+        int a_par = find(a);
+        int b_par = find(b);
 
-        if(rank[x_par]<rank[y_par]){
-            parent[x_par] = y_par;
+        if(rank[a_par]<rank[b_par]){
+            parent[a_par]  = b_par;
         }
-        else if(rank[y_par]<rank[x_par]){
-            parent[y_par] = x_par;
+        else if(rank[b_par]<rank[a_par]){
+            parent[b_par] = a_par;
         }
-        else {
-            parent[x_par] = y_par;
-            rank[y_par]++;
+        else{
+            parent[b_par] = a_par;
+            rank[a_par]++;
         }
-
     }
 
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-        int n = edges.size();
-        vector<int> ans,parent(n+1,0),rank(n+1);
-        for(int i = 0;i<n+1;i++){
+        int n = edges.size()+1;
+        rank.resize(n,0);
+        parent.resize(n,0);
+        for(int i = 0;i<n;i++){
             parent[i] = i;
         }
+        vector<int> ans;
+        for(auto i:edges){
+            int ff = i[0];
+            int ss = i[1];
 
-        for(auto ed:edges){
-            int ff = ed[0];
-            int ss = ed[1];
-
-            if(find(ff,parent) == find(ss,parent)){
+            if(find(ff)==find(ss)){
                 ans = {ff,ss};
             }
-            Union(ff,ss,parent,rank);
+            else{
+                Union(ff,ss);
+            }
         }
-
         return ans;
-
     }
 };
