@@ -16,8 +16,8 @@ public:
         for (int i = ind; i < books.size(); ++i) {
             width += books[i][0];
             if (width > shelfWidth) break;
-            maxH = std::max(maxH, books[i][1]);
-            ans = std::min(ans, maxH + solve(books, shelfWidth, i + 1));
+            maxH = max(maxH, books[i][1]);
+            ans = min(ans, maxH + solve(books, shelfWidth, i + 1));
         }
         
         return memo[ind] = ans;
