@@ -1,25 +1,22 @@
+void solve(int ind,vector<int>& nums,vector<vector<int>>& ans){
+    if(ind==nums.size()){
+        ans.push_back(nums);
+        return;
+    }
+
+    for(int i=ind;i<nums.size();i++){
+        swap(nums[i],nums[ind]);
+        solve(ind+1,nums,ans);
+        swap(nums[i],nums[ind]);
+    }
+}
+
 class Solution {
 public:
-    set<vector<int>> ans;
-    void solve(int ind,int idx,vector<int>&arr){
-        if(ind>=arr.size()){
-            ans.insert(arr);
-            return;
-        }
-
-        for(int i = 0;i<arr.size();i++){
-            swap(arr[i],arr[ind]);
-            solve(ind+1,i,arr);
-            swap(arr[i],arr[ind]);;
-        }
-        
-    }
     vector<vector<int>> permute(vector<int>& nums) {
-        solve(0,0,nums);
-        vector<vector<int>> res;
-        for(auto i:ans){
-            res.push_back(i);
-        }
-        return res;
+        vector<vector<int>> ans;
+        solve(0,nums,ans);
+
+        return ans;
     }
 };
