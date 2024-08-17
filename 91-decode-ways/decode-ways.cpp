@@ -1,30 +1,18 @@
 class Solution {
 public:
-    int dp[1000];
-    int solve(int idx ,string &s){
-        if(idx>=s.length()){
-            return 1;
-        }
-        if(s[idx]=='0') return 0;
-
-        if(dp[idx]!= -1) return dp[idx];
-        int a = 0 ,b = 0;
-        a = solve(idx+1,s);
-        string t = "";
-        t.push_back(s[idx]);
-        if(idx+1<s.length()){
-            t.push_back(s[idx+1]);
-            if(stoi(t)<=26 && stoi(t)>0){
-            b =solve(idx+2,s);
-        }
-        }
-        
-
-        return dp[idx] = a+b;
-
-    }
     int numDecodings(string s) {
-        memset(dp,-1,sizeof(dp));
-        return solve(0,s);
+        int n = s.length();
+        int dp[n];
+        dp[0] = (s[0]=='0')?0:1;
+        for(int i = 1;i<n;i++){
+            dp[i] = 0;
+            if(s[i]!='0') dp[i] += dp[i-1];
+            if(s.substr(i-1,2)>"00" && s.substr(i-1,2)<="26" && s[i-1]!='0'){
+                if(i-2>=0) dp[i]+=dp[i-2];
+                else dp[i]++;
+            }
+        }
+        // cout<<s.substr(0,2)<<endl;;
+        return dp[n-1];
     }
 };
