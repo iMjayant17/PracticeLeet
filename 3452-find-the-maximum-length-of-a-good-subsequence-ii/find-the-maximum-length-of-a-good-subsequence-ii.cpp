@@ -9,9 +9,8 @@ public:
         for (int i = 0; i < n; i++) {
             for (int j = 0; j <= k; j++) {
                 dp[i][j] = m[j][nums[i]] + 1;
-                if (j - 1 >= 0)
-                    dp[i][j] = max(dp[i][j], dp[i][j - 1]);
                 if (j - 1 >= 0) {
+                    dp[i][j] = max(dp[i][j], dp[i][j - 1]);
                     dp[i][j] = max(1 + maxi[j - 1], dp[i][j]);
                     maxi[j - 1] = max(maxi[j - 1], dp[i][j - 1]);
                 }
