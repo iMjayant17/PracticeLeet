@@ -1,18 +1,23 @@
 class Solution {
 public:
-int dp[505][505];
-    int solve(vector<int> &arr,int l,int r){
-        if(l==r) return arr[l];
-        if(l>r) return 0;
-        if(dp[l][r]!= -1) return dp[l][r];
-        int a = arr[l] + min(solve(arr,l+2,r) ,solve(arr,l+1,r-1));
-        int b = arr[r] + min(solve(arr,l,r-2) ,solve(arr,l+1,r-1));
-        return dp[l][r]=max(a,b);
-    }
-    bool stoneGame(vector<int>& piles) {
-        memset(dp,-1,sizeof(dp));
-        int sum = accumulate(piles.begin(),piles.end(),0ll);
-        int ans = solve(piles,0,piles.size()-1);
-        return ans>sum-ans;
+    bool stoneGame(vector<int>& arr) {
+        int n = arr.size();
+        int dp[n+1][n+1];
+        for(int dif = 0;dif<n;dif++){
+            for(int i=0,j = i+dif ;j<n;i++,j++){
+                if(dif==0){
+                    dp[i][j] = arr[i];
+                }
+                else if(dif==1){
+                    dp[i][j] = max(arr[i],arr[j]);
+                }
+                else{
+                    int a = arr[i] + min(dp[i+2][j],dp[i+1][j-1]);
+                    int b = arr[j] + min(dp[i][j-2],dp[i+1][j-1]);
+                    dp[i][j] = max(a,b);
+                }
+            }
+        }
+        return dp[0][n-1];
     }
 };
