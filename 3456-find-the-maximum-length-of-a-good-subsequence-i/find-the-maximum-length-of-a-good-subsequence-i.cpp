@@ -1,40 +1,28 @@
 class Solution {
 public:
-    int n;
-    int dp[505][505][30];
-    int solve(vector<int> &nums,int idx,int last,int k){
-        if(idx>=n) return 0;
-
-        if(dp[idx][last+1][k] != -1) return dp[idx][last+1][k];
-        int p = 0,q = 0;
-        int include= 0,exclude = 0;
-
-       if(last == -1){
-            include = 1 + solve(nums,idx+1,idx,k);
-            exclude = solve(nums,idx+1,last,k);
-       }
-       else{
-            if(nums[idx]==nums[last]){
-                include = 1 + solve(nums,idx+1,idx,k);
-                exclude = 0 + solve(nums,idx+1,last,k);
-            }
-            else{
-                if(k>0) include = 1 + solve(nums,idx+1,idx,k-1);
-                exclude = 0 + solve(nums,idx+1,last,k);
-
-            }
-       }
-
-        return dp[idx][last+1][k] = max(include,exclude);
-
-    }
-
     int maximumLength(vector<int>& nums, int k) {
-        n = nums.size();
-        memset(dp,-1,sizeof(dp));
-        int ans = solve(nums,0,-1,k);
+        
+        int n = nums.size();
+        int dp[n][k+1];
+        int ans = 0;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<=k;j++){
+                int maxi = 0;
+                for(int l = 0;l<i;l++){
+                    if(nums[i]==nums[l]){
+                        maxi = max(maxi,dp[l][j]);
+                    }
+                    else{
+                        if(j-1>=0) maxi = max(maxi,dp[l][j-1]);
+                    }
+                }
+                
+                dp[i][j] = 1 + maxi;
+                if(j-1>=0) dp[i][j] = max(dp[i][j],dp[i][j-1]);
+                if(j==k) ans = max(ans,dp[i][j]);
+            }
+        }
 
-
-return ans;
+        return ans;
     }
 };
