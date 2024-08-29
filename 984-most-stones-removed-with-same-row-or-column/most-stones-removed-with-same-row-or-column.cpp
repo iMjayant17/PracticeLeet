@@ -74,9 +74,9 @@ public:
         set<int> st;
         for(auto i:stones){
             int a = find(i[0]);
-            int b = find(i[1]+10008);
+            // int b = find(i[1]+10008);
             st.insert(a);
-            st.insert(b);
+            // st.insert(b);
         }
 
         return stones.size() - st.size();
