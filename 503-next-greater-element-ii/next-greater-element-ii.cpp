@@ -10,10 +10,10 @@ public:
         vector<int> temp(nums.size());
         int n = nums.size();
         for(int i  = n-1;i>=0;i--){
-            while(s.size()>0 && abs(s.top()-i)<k &&  nums[s.top()%k]<= nums[i]){
+            while(s.size()>0  &&  nums[s.top()%k]<= nums[i]){
                 s.pop();
             }
-            if(s.size()==0 || abs(s.top()-i)>=k){
+            if(s.size()==0){
                 temp[i] = -1;
             }
             else{
