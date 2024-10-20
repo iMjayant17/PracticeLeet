@@ -1,26 +1,26 @@
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
-        long double ans1= INT_MIN;
-        long double ans2 = INT_MIN;
-        long long n = nums.size();
-        long double prod = 1;
-        for(long long i = 0;i<n;i++){
-            prod = prod*nums[i];
-            ans1 = max(ans1,prod);
+        if (nums.empty()) return 0; // Handle edge case
 
-            if(prod==0) prod = 1;
+    int max_product = nums[0]; // To keep track of the maximum product found
+    int min_product = nums[0]; // To handle negative numbers
+    int result = nums[0]; // Overall maximum product
+
+    for (int i = 1; i < nums.size(); i++) {
+        if (nums[i] < 0) {
+            // Swap max_product and min_product when encountering a negative number
+            swap(max_product, min_product);
         }
 
-        prod = 1;
+        // Update max_product and min_product
+        max_product = max(nums[i], max_product * nums[i]);
+        min_product = min(nums[i], min_product * nums[i]);
 
-        for(long long i = n-1;i>=0;i--){
-            prod = 1ll*prod*nums[i];
-            ans2 = max(ans2,prod);
+        // Update the result
+        result = max(result, max_product);
+    }
 
-            if(prod==0) prod = 1;
-        }
-
-        return max(ans1,ans2);
+    return result;
     }
 };
