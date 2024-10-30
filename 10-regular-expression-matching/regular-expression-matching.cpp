@@ -1,39 +1,36 @@
 class Solution {
 public:
-    bool isMatch(string s, string p) {
-        int n = s.length();
-        int m = p.length();
-        bool dp[n+1][m+1];
-
-        for(int i = 0;i<=n;i++){
-            for(int j = 0;j<=m;j++){
-                if(i==0 && j==0){
-                    dp[i][j] = true;
-                }
-                else if(i==0){
-                    char c = p[j-1];
-                    if(c!='*') dp[i][j] = false;
-                    else dp[i][j] = dp[i][j-2];
-                }
-                else if(j==0){
-                    dp[i][j] = false;
-                }
-                else{
-                    if(s[i-1]==p[j-1] || p[j-1]=='.') dp[i][j] = dp[i-1][j-1];
-                    else if(p[j-1]=='*'){
-                        dp[i][j] = dp[i][j-2];
-
-                        if(s[i-1]==p[j-2] || p[j-2]=='.'){
-                            dp[i][j] |= dp[i-1][j];
-                        }
-                    }
-                    else{
-                        dp[i][j] = false;
-                    }
-                }
-            }
+bool solve(string &s,string &p,int i,int j,vector<vector<int>>&dp){
+// base condition if  we pass whole p string and check string s is also passed or not 
+    if (j == p.length()) {
+            return i == s.length();
         }
 
-        return dp[n][m];
+    
+     // if the i,j is  already computed than skip to find
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+
+    // find the character at i index of string s anf the character at j index aat string p is equal or p[j]='.' than firstMatch is true
+    bool firstMatch = (i < s.length() && (s[i] == p[j] || p[j] == '.'));
+// check for the use of '*' if '*' is use for skip or how many seqence repetedly
+//store the value in dp 
+  if (j + 1 < p.length() && p[j + 1] == '*') {
+           
+            dp[i][j] = solve(s, p, i, j + 2, dp) || (firstMatch && solve(s, p, i + 1, j, dp));
+        } else {
+          
+            dp[i][j] = firstMatch && solve(s, p, i + 1, j + 1, dp);
+        }
+//return dp[i][j]
+    return dp[i][j];
+}
+    bool isMatch(string s, string p) {
+       //intialize dp vector with length+1 
+        vector<vector<int>>v(s.length()+1,vector<int>(p.length()+1,-1));
+//call the function
+        return solve(s,p,0,0,v);
+            
     }
 };
