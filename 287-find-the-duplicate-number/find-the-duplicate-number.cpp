@@ -13,8 +13,9 @@ public:
                     fast = nums[fast];
                     if(slow==fast) return slow;
                 }
+                return slow;
             }
         }while(slow!=fast);
-        return slow;
+        return -1;
     }
 };
